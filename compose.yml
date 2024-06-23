@@ -1,0 +1,33 @@
+volumes:
+    db:
+
+services:
+    http:
+        container_name: gemini-test-system-nginx
+        image: nginx:alpine
+        restart: unless-stopped
+        ports:
+          - ${DOCKER_HTTP_PORT}:80
+        volumes:
+            - ./:/var/www
+            - ./.docker/nginx/:/etc/nginx/conf.d/
+        networks:
+            - gemini-test-system
+    app:
+        container_name: gemini-test-system-api
+        build:
+            args:
+              user: ${DOCKER_USER_ID:-0}
+              uid: ${DOCKER_GROUP_ID:-0}
+            context: .
+            dockerfile: Dockerfile
+        image: laravel-api
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - .:/var/www
+        networks:
+          - gemini-test-system
+networks:
+    gemini-test-system:
+        driver: bridge

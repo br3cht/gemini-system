@@ -10,13 +10,6 @@ class GeminiUseCasesFactory
 {
     public function whatHappened(): ChatInterface
     {
-        $GeminiGpt = $this->createGeminiGptEntity();
-
-        return new WhatHappned($GeminiGpt);
-    }
-
-    protected function createGeminiGptEntity()
-    {
-        return new GeminiGpt;
+        return resolve(WhatHappned::class);
     }
 }

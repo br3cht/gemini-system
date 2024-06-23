@@ -9,8 +9,6 @@ class GeminiGpt
 {
     public function textOnlyInput(ChatInput $input): string
     {
-        return 'a';
-
         $response = FacadesGemini::geminiPro()->generateContent($input->text);
 
         return $response->text();

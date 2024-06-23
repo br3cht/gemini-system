@@ -3,7 +3,7 @@ volumes:
 
 services:
     http:
-        container_name: gemini-test-system-nginx
+        container_name: gemini-system-nginx
         image: nginx:alpine
         restart: unless-stopped
         ports:
@@ -12,9 +12,9 @@ services:
             - ./:/var/www
             - ./.docker/nginx/:/etc/nginx/conf.d/
         networks:
-            - gemini-test-system
+            - gemini-system
     app:
-        container_name: gemini-test-system-api
+        container_name: gemini-system-api
         build:
             args:
               user: ${DOCKER_USER_ID:-0}
@@ -27,9 +27,9 @@ services:
         volumes:
             - .:/var/www
         networks:
-          - gemini-test-system
+          - gemini-system
     db:
-        container_name: gemini-test-system-db
+        container_name: gemini-system-db
         image: mysql:8
         restart: unless-stopped
         environment:
@@ -40,8 +40,8 @@ services:
         ports:
           - ${DOCKER_DB_PORT}:3306
         networks:
-          - gemini-test-system
+          - gemini-system
 
 networks:
-    gemini-test-system:
+    gemini-system:
         driver: bridge

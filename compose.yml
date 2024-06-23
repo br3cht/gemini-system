@@ -28,6 +28,20 @@ services:
             - .:/var/www
         networks:
           - gemini-test-system
+    db:
+        container_name: gemini-test-system-db
+        image: mysql:8
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        volumes:
+            - db:/var/lib/mysql
+        ports:
+          - ${DOCKER_DB_PORT}:3306
+        networks:
+          - gemini-test-system
+
 networks:
     gemini-test-system:
         driver: bridge

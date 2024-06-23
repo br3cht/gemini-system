@@ -36,4 +36,20 @@ class WhatHappenedTest extends TestCase
         $response = $service->execute($input);
         $this->assertEquals('hello', $response);
     }
+
+    public function test_gemini_what_happened_with_http(): void
+    {
+        $this->mock(GeminiGpt::class,  function(MockInterface $mock){
+            $mock->shouldReceive('textOnlyInput')
+                ->once()
+            ->andReturn('hello');
+        });
+        $request = [
+            'text' => 'hello world'
+        ];
+
+        $response = $this->post('api/chat/only-text', $request)->assertOk();
+        $this->assertEquals('hello', $response['result']);
+    }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTO\Gemini\ChatInput;
+use App\Entity\GeminiGpt;
 use App\Factory\Gemini\GeminiUseCasesFactory;
 use App\Http\Requests\Gemini\ChatRequest;
 use Illuminate\Http\Request;
@@ -16,13 +17,23 @@ class GeminiController extends Controller
         $this->geminiUseCasesFactory = $geminiUseCasesFactory;
     }
 
-    public function whatHappned(ChatRequest $chatRequest)
+    public function getInformation(ChatRequest $request)
     {
-        $dataRequest = $chatRequest->validated();
-        $service = $this->geminiUseCasesFactory->whatHappened();
-        $input = new ChatInput($dataRequest['text']);
-        $result = $service->execute($input);
+        $dataRequest = $request->validated();
 
-        return response()->json(['result' => $result], 200);
+        if(!empty(optional($dataRequest)['image'])){
+            $service = $this->geminiUseCasesFactory->proVision();
+        }else {
+            $service = $this->geminiUseCasesFactory->pro();
+        }
+
+        $input = new ChatInput(
+            optional($dataRequest)['text'],
+            optional($dataRequest)['image']
+        );
+
+        $response = $service->execute($input);
+
+        return response()->json(['result' => $response], 200);
     }
 }

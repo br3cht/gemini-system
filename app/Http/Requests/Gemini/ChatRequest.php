@@ -23,6 +23,7 @@ class ChatRequest extends FormRequest
     {
         return [
             'text' => 'nullable|string',
+            'image' => 'nullable|file|image'
         ];
     }
 }

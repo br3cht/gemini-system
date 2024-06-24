@@ -9,4 +9,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::post('/chat/only-text', [GeminiController::class, 'whatHappned']);
+Route::post('/chat/information', [GeminiController::class, 'getInformation']);
+
